@@ -2,6 +2,7 @@
 #include "ant.h"
 #include "utils.h"
 #include <random>
+#include <vector>
 
 class Simulation {
     matrix generate_heat_map(){
@@ -15,14 +16,20 @@ class Simulation {
         return result;
     }
 
+    matrix generate_phero_map(){
+        matrix result = initial_pheromones;
+    }
+
     public:
 
         Simulation(){
             _heat_matrix = generate_heat_map();
+            _phero_matrix = generate_phero_map();
         }
-        double _ant_heat_capacity;
         int _max_time_steps;
         matrix _heat_matrix;
+        matrix _phero_matrix;
+        std::vector<Ant> _ants;
 
 };
 
