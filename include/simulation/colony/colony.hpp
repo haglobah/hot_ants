@@ -42,10 +42,15 @@ struct Colony
     {
         id = colony_id;
         base.food = 0.0f;
-        uint32_t ants_count = 1000;
+		static int colony_count = 0;
+        uint32_t ants_count = 3;
+		if(colony_count > 0) {
+			ants_count = 0;
+		}
         for (uint32_t i(ants_count); i--;) {
             createWorker();
         }
+		colony_count++;
     }
 
     void setPosition(sf::Vector2f new_position)
@@ -113,7 +118,7 @@ struct Colony
 		}
 	}
 
-	void update(float dt, World& world)
+	void update(float dt, World& world, ColonyBase enemy_base)
 	{
 		// Update stats
 		if (pop_diff_update.updateAutoReset(dt)) {
@@ -123,6 +128,7 @@ struct Colony
 		// Update ants and check if collision with colony
 		for (Ant& ant : ants) {
 			AntUpdater::update(ant, world, dt);
+			ant.checkColonyEnemy(enemy_base, base);
 			ant.checkColony(base);
 		}
 	}

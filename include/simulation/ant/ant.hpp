@@ -34,7 +34,7 @@ struct Ant
 	};
 
 	// Parameters
-	static constexpr float move_speed                = 40.0f;
+	static constexpr float move_speed                = 60.0f;
 	static constexpr float marker_detection_max_dist = 40.0f;
 	static constexpr float direction_update_period   = 0.25f;
 	static constexpr float marker_period             = 0.25f;
@@ -170,8 +170,8 @@ struct Ant
 	void checkFood(World& world)
 	{
 		if (world.map.isOnFood(position)) {
-			phase = Mode::ToHome;
-			direction.addNow(PI);
+			
+			+
 			autonomy = 0.0f;
 			internal_clock = 0.0f;
 			if (world.map.pickFood(position)) {
@@ -181,6 +181,8 @@ struct Ant
 				// Add a repellent for 300s
 				world.addMarkerRepellent(position, col_id, 300.0f);
 			}
+			
+
 		}
 	}
 
@@ -209,7 +211,20 @@ struct Ant
 		}
 	}
 
-	void updateClocks(float dt)
+	void checkColonyEnemy(ColonyBase& base_enemy, ColonyBase& base)
+	{
+		if (getLength(position - base_enemy.position) < base_enemy.radius) {
+			marker_add.target = marker_period;
+			if (true) {
+				if(phase == Mode::ToEnemy) {
+					phase = Mode::ToHome;
+				}
+				position = base.position;
+			}
+		}
+	}
+
+	void Clocks(float dt)
 	{
 		autonomy += dt;
 		internal_clock += dt;

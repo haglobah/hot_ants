@@ -73,7 +73,8 @@ struct Simulation
 			}
 			// Then update objectives and world sampling
 			for (Colony& colony : colonies) {
-				colony.update(dt, world);
+				colony.update(dt, world, colonies.data.at(1).base);
+
 			}
 			// Search for fights
 			fight_system.checkForFights(colonies, world);
