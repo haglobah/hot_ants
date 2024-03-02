@@ -3,7 +3,18 @@
 #include "simulation.h"
 
 
-void walk(Simulation& sim){
+void collect(Simulation& sim)
+{
+
+}
+
+void orientate(Simulation& sim)
+{
+
+}
+
+void walk(Simulation& sim)
+{
     std::vector<Ant> ants = sim._ants;
     for (int i = 0; i < ants.size(); i++){
         //calculate change in position
@@ -31,14 +42,28 @@ void execute_death(Simulation& sim){
     };
 }
 
+void upate_heatmap(Simulation& sim, matrix heatsource_map)
+{
+
+}
+
+void diffuse_pheromones(Simulation& sim)
+{
+
+}
 
 int main(){
     
     Simulation sim = Simulation();
 
     while (true) {
-        break ;
-    };
+        collect(sim);
+        orientate(sim);
+        walk(sim);
+        execute_death(sim);
+        upate_heatmap(sim, heatsource_map);
+        diffuse_pheromones(sim);
+    }
     
     printMatrix(sim._heat_matrix);
 
