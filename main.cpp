@@ -17,10 +17,17 @@ void walk(Simulation& sim){
 }
 
 
-void death(Simulation& sim){
-    std::vector<Ant> ants = sim._ants;
+void execute_death(Simulation& sim){
     for (Ant ant : sim._ants){
-        //if (ant._current_position.second)
+        if (ant._current_position.second == (Y_DIM-1)){
+            //update pheromones map
+            for (std::pair<int,int> pos : ant._path){
+                int x = pos.first;
+                int y = pos.second;
+
+                sim._phero_matrix[x][y];
+            };
+        };
     };
 }
 
