@@ -15,7 +15,7 @@ struct Ant{
     double _direction; //angle in radian, for zero zeigt in positive x direction
     std::vector<Point> _path;
     double _ant_temperature;
-    const double _speed = 2;
+    const double _speed = 10;
 
     Ant(Point current_position, double direction, double ant_temperature) : 
         _current_position(current_position),

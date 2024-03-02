@@ -22,17 +22,19 @@ matrix initial_heatsource(X_DIM, std::vector<double>(Y_DIM, 1.0));
 
 std::random_device rd;
 std::mt19937 gen(rd());
-std::uniform_int_distribution<> distrib(0, Y_DIM);
+std::uniform_int_distribution<> distrib(0, Y_DIM-1);
 int y_random(){
+    std::mt19937 gen(rd());
     return distrib(gen);
 }
 
-
-void printMatrix(const matrix& mat, bool csv) {
+template <typename T>
+void printMatrix(const std::vector<std::vector<T>>& mat, bool csv) {
     for (const auto& row : mat) {
-        for (int elem : row) {
+        for (T elem : row) {
             std::cout << elem << " ";
         }
         std::cout << std::endl; // Move to the next line after printing a row
     }
+    std::cout << std::endl;
 }

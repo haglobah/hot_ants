@@ -28,28 +28,26 @@ class Simulation {
 
     public:
 
-        void saveSimState(){
-            printMatrix(_heat_matrix, false);
-            printMatrix(_phero_matrix, false);
-            std::ofstream heatFile("heatHistory.txt", std::ios::app);
+        void saveSimState(std::ofstream& heatFile, std::ofstream& pheroFile){
+            //printMatrix(_heat_matrix, false);
+            //printMatrix(_phero_matrix, false);
             for(int i = 0; i < X_DIM; ++i) {
                 for(int j = 0; j < Y_DIM; ++j) {
                     if (j == 0) {
                         heatFile << _heat_matrix.at(i).at(j);
-                        break ;
+                    } else {
+                        heatFile << ", " << _heat_matrix.at(i).at(j);
                     }
-                    heatFile << ", " << _heat_matrix.at(i).at(j);
                 }
                 heatFile << "\n";
             }
-            std::ofstream pheroFile("pheroHistory.txt", std::ios::app);
             for(int i = 0; i < X_DIM; ++i) {
                 for(int j = 0; j < Y_DIM; ++j) {
                     if (j == 0) {
                         pheroFile << _phero_matrix.at(i).at(j);
-                        break ;
+                    } else {
+                        pheroFile << ", " << _phero_matrix.at(i).at(j);
                     }
-                    pheroFile << ", " << _phero_matrix.at(i).at(j);
                 }
                 pheroFile << "\n";
             }
@@ -60,7 +58,13 @@ class Simulation {
             _heat_matrix = generate_heat_map();
             _heatsource_matrix = generate_heatsource_map();
             _phero_matrix = generate_phero_map();
-            _ants = std::vector<Ant>(n_ants, Ant());
+            for(int i = 0; i < n_ants; i++) {
+                _ants.push_back(Ant());
+            }
+            for(Ant ant : _ants) {
+                std::cout << "\n" << ant._current_position.y << " ";
+            }
+            std::cout << "\n" << "AAAAAA";
             // Initialize Output files
             std::ofstream heatFile("heatHistory.txt");
             std::ofstream pheroFile("pheroHistory.txt");
