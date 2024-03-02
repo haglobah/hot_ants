@@ -3,14 +3,16 @@
 #include "simulation.h"
 
 
-void walk(matrix heatmap, std::vector<Ant> Ants){
-    for (int i = 0; i < Ants.size(); i++){
+void walk(Simulation& sim){
+    std::vector<Ant> ants = sim._ants;
+    for (int i = 0; i < ants.size(); i++){
         //calculate change in position
-        double dx = cos(Ants[i]._direction)*Ants[i]._speed;
-        double dy = sin(Ants[i]._direction)*Ants[i]._speed;
+        double dx = cos(ants[i]._direction)*ants[i]._speed;
+        double dy = sin(ants[i]._direction)*ants[i]._speed;
         //change current position using dx, dy
-        Ants[i]._current_position = {Ants[i]._current_position.first + dx, Ants[i]._current_position.second + dy};
+        ants[i]._current_position = {ants[i]._current_position.first + dx, ants[i]._current_position.second + dy};
         //update path with new ent
+        ants[i]._path.push_back(ants[i]._current_position)
     } 
 }
 
