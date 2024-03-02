@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <random>
+#include <unility>
 
 #define X_DIM 20
 #define Y_DIM 10
@@ -11,6 +12,7 @@
 
 
 using matrix = std::vector<std::vector<double>>;
+using position = std::pair<int,int>;
 
 matrix initial_pheromones(X_DIM, std::vector<double>(Y_DIM, 0.0));
 matrix initial_heat(X_DIM, std::vector<double>(Y_DIM, 0.0));
