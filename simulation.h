@@ -1,6 +1,6 @@
+#pragma once
 #include "ant.h"
 #include "utils.h"
-#pragma once
 #include <random>
 
 class Simulation {
