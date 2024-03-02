@@ -14,12 +14,12 @@ def read_data_from_file(file_path):
         # Read the remaining lines and fill in the array
         for t in range(time_steps):
             for i in range(x_dim):
+                string_list = file.readline().split(",")
                 for j in range(y_dim):
-                    string = file.readline()
-                    if string == "":
+                    if string_list[j] == "":
                         data_array[t, i, j] = 0
                     else:
-                        data_array[t, i, j] =  float(string)
+                        data_array[t, i, j] =  float(string_list[j])
         return data_array
 
 
@@ -46,19 +46,22 @@ def array_to_rgb(array):
 def make_vid(data_array):
     t, x, y = data_array.shape
     for i in range(t):
-        rgb_array = array_to_rgb(data_array[i])
-        cv2.imwrite('out/' +format(i, '05d')+'.jpg', rgb_array)
+        black_white_array = data_array[i]
+        cv2.imwrite('out/' + format(i, '05d')+'.jpg', black_white_array)
 
-    frameSize = (x, y)
+    frameSize = (1200, 600)
 
-    out = cv2.VideoWriter('out/output_video.m4v', cv2.VideoWriter_fourcc(*'mp4v'), 10, frameSize)
+    video_out = cv2.VideoWriter('output_video.m4v', cv2.VideoWriter_fourcc(*'mp4v'), 10, frameSize)
 
     for file in glob.glob('out/*.jpg'):
         #print(file)
         img = cv2.imread(file)
-        out.write(img)
+        resized = cv2.resize(img, frameSize)
+        cv2.imwrite(file, resized)
+        resized_jpg = cv2.imread(file)
+        video_out.write(resized_jpg)
 
-    out.release()
+    video_out.release()
 
 
 # Example usage:
