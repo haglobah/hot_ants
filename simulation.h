@@ -23,6 +23,6 @@ class Simulation {
         double _ant_heat_capacity;
         int _max_time_steps;
         matrix _heat_matrix;
-
+        std::vector<Ant> _ants;
 };
 
