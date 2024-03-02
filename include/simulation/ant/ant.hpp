@@ -170,8 +170,6 @@ struct Ant
 	void checkFood(World& world)
 	{
 		if (world.map.isOnFood(position)) {
-			
-			+
 			autonomy = 0.0f;
 			internal_clock = 0.0f;
 			if (world.map.pickFood(position)) {
@@ -222,6 +220,13 @@ struct Ant
 				position = base.position;
 			}
 		}
+	}
+
+	void updateClocks(float dt)
+	{
+		autonomy += dt;
+		internal_clock += dt;
+		to_enemy_markers_count += dt;
 	}
 
 	void Clocks(float dt)
