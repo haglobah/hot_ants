@@ -61,6 +61,11 @@
             pkgs.gnumake
             pkgs.cmake
             pkgs.rocmPackages.llvm.clang
+            (pkgs.python311.withPackages (python-pkgs: [
+              python-pkgs.numpy
+              python-pkgs.opencv4
+              python-pkgs.glob2
+            ]))
           ];
           commands = [
             # { name = "devshell-test"; command = "echo 'Is this working?'"; help = "A command to test devshell";}
