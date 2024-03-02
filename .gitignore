@@ -6,5 +6,5 @@ cmake-*/
 compile_commands.json
 .DS_Store
 demo*/
-.direnv
+.direnv/
 result
