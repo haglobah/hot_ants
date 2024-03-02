@@ -24,7 +24,35 @@
         # system.
 
         # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
-        # packages.default = pkgs.stdenv.mkDerivation;
+        packages.default = pkgs.stdenv.mkDerivation {
+          name = "water_ants";
+          src = ./.;
+          buildInputs = [ # available at runtime
+            # pkgs.ncurses
+          ];
+
+          nativeBuildInputs = [ # available at build time
+            pkgs.cmake
+            pkgs.gcc
+            pkgs.gnumake
+          ];
+
+          phases = [
+            "unpackPhase"
+            "buildPhase"
+            "installPhase"
+          ];
+
+          buildPhase = ''
+            cmake -B build -S .
+            cmake --build build
+          '';
+
+          installPhase = ''
+            mkdir -p $out/bin
+            cp ./build/water_ants $out/bin
+          '';
+        };
         devshells.default = {
           env = [
             # { name = "MY_ENV_VAR"; value = "SOTRUE"; }
