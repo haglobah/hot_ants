@@ -63,7 +63,7 @@
             pkgs.rocmPackages.llvm.clang
             (pkgs.python311.withPackages (python-pkgs: [
               python-pkgs.numpy
-              # python-pkgs.cv2
+              python-pkgs.opencv4
               python-pkgs.glob2
             ]))
           ];
