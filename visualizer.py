@@ -14,12 +14,12 @@ def read_data_from_file(file_path):
         # Read the remaining lines and fill in the array
         for t in range(time_steps):
             for i in range(x_dim):
+                string_list = file.readline().split(",")
                 for j in range(y_dim):
-                    string = file.readline()
-                    if string == "":
+                    if string_list[j] == "":
                         data_array[t, i, j] = 0
                     else:
-                        data_array[t, i, j] =  float(string)
+                        data_array[t, i, j] =  float(string_list[j])
         return data_array
 
 
@@ -46,8 +46,8 @@ def array_to_rgb(array):
 def make_vid(data_array):
     t, x, y = data_array.shape
     for i in range(t):
-        rgb_array = array_to_rgb(data_array[i])
-        cv2.imwrite('out/' + format(i, '05d')+'.jpg', rgb_array)
+        black_white_array = data_array[i]
+        cv2.imwrite('out/' + format(i, '05d')+'.jpg', black_white_array)
 
     frameSize = (1200, 600)
 
