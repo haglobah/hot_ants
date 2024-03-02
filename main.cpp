@@ -1,11 +1,10 @@
 #include <vector>
 #include <iostream>
-#include "utils.h"
 #include "simulation.h"
 
 int main(){
     
-    Simulation sim();
+    Simulation sim = Simulation();
     
     printMatrix(sim._heat_matrix);
 

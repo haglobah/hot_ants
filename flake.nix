@@ -24,7 +24,7 @@
         # system.
 
         # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
-        packages.default = pkgs.hello;
+        # packages.default = pkgs.stdenv.mkDerivation;
         devshells.default = {
           env = [
             # { name = "MY_ENV_VAR"; value = "SOTRUE"; }

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <random>
 
@@ -10,10 +12,8 @@
 
 using matrix = std::vector<std::vector<double>>;
 
-//matrix initial_pheromones(X_DIM, std::vector<double>(Y_DIM, 0.0));
-//matrix initial_heat(X_DIM, std::vector<double>(Y_DIM, 0.0));
-
-
+matrix initial_pheromones(X_DIM, std::vector<double>(Y_DIM, 0.0));
+matrix initial_heat(X_DIM, std::vector<double>(Y_DIM, 0.0));
 
 std::random_device rd;
 std::mt19937 gen(rd());
