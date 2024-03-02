@@ -30,6 +30,5 @@ class Simulation {
         matrix _heat_matrix;
         matrix _phero_matrix;
         std::vector<Ant> _ants;
-
 };
 

@@ -26,6 +26,10 @@ void death(Simulation& sim){
 int main(){
     
     Simulation sim = Simulation();
+
+    while (true) {
+        break ;
+    };
     
     printMatrix(sim._heat_matrix);
 
