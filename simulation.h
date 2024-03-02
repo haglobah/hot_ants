@@ -61,10 +61,6 @@ class Simulation {
             for(int i = 0; i < n_ants; i++) {
                 _ants.push_back(Ant());
             }
-            for(Ant ant : _ants) {
-                std::cout << "\n" << ant._current_position.y << " ";
-            }
-            std::cout << "\n" << "AAAAAA";
             // Initialize Output files
             std::ofstream heatFile("heatHistory.txt");
             std::ofstream pheroFile("pheroHistory.txt");

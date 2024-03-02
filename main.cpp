@@ -3,14 +3,14 @@
 #include "simulation.h"
 #include <cmath>
 #include <random>
-
+#include <string>
 
 void collect(Simulation& sim)
 {
     int x;
     int y;
     double K = 1.0; //we'll maybe have to tweek that
-    for (Ant ant : sim._ants){
+    for (Ant& ant : sim._ants){
         x = ant._current_position.x;
         y = ant._current_position.y;
         if (ant._ant_temperature < sim._heat_matrix.at(x).at(y)) {
@@ -44,65 +44,55 @@ void orientate(Simulation& sim)
     }
 }
 void print_ants(std::vector<Ant>& ants){
-    std::vector<std::vector<char>> ants_matrix(Y_DIM, std::vector<char>(X_DIM, '.'));
+    std::vector<std::vector<std::string>> ants_matrix(Y_DIM, std::vector<std::string>(X_DIM, "."));
     for(Ant ant : ants) {
-        ants_matrix.at(ant._current_position.y).at(ant._current_position.x) = 'X';
+        ants_matrix.at(ant._current_position.y).at(ant._current_position.x) = "\U0001F41C";
     }
     printMatrix(ants_matrix, false);
 }
 
 void walk(Simulation& sim)
 {   
-    /*
-    double bias_up = 1;
-    double bias_down = 1;
-    double bias_right = 2;
-    for(Ant ant : sim._ants){
+    double bias_up = 0.75;
+    double bias_down = 0.75;
+    double bias_right = 1;
+    for(Ant& ant : sim._ants){
         int x = ant._current_position.x;
         int y = ant._current_position.y;
-        if(x < X_DIM){
-            double up = sim._heat_matrix.at(x+1).at(y) + sim._phero_matrix.at(x+1).at(y) + bias_up;
-        } else { 
-            double up = 0.0; 
+        if(y < Y_DIM - 1){
+            bias_up *= (sim._heat_matrix.at(x).at(y+1) + sim._phero_matrix.at(x).at(y+1));
+        }else {
+            bias_up = 0.0;
         }
-       
-        double down =
-    }
-    */
+        if(y > 0){
+            bias_down *= (sim._heat_matrix.at(x).at(y-1) + sim._phero_matrix.at(x).at(y-1));
+        }else {
+            bias_down = 0.0;
+        }
+        bias_right *= (sim._heat_matrix.at(x+1).at(y) + sim._phero_matrix.at(x+1).at(y));
+        double rand_up = urand() * bias_up;
+        double rand_down = urand() * bias_down;
+        double rand_right = urand() * bias_right;
 
-    //std::vector<Ant> ants = sim._ants;
-    //for (int i = 0; i < ants.size(); i++){
-    //    //calculate change in position
-    //    double dx = cos(ants[i]._direction)*ants[i]._speed;
-    //    double dy = sin(ants[i]._direction)*ants[i]._speed;
-    //    //change current position using dx, dy
-    //    int destination_x = int(double(ants[i]._current_position.x) + dx);
-    //    int destination_y = int(double(ants[i]._current_position.y) + dy);
-    //    if(destination_x >= X_DIM || destination_x <= 0){
-    //        ants[i]._direction *= -1;
-    //        double dx = cos(ants[i]._direction)*ants[i]._speed;
-    //        double dy = cos(ants[i]._direction)*ants[i]._speed;
-    //        int destination_x = int(double(ants[i]._current_position.x) + dx);
-    //    }
-    //    if(destination_y >= Y_DIM || destination_y <= 0){
-    //        ants[i]._direction += M_PI;
-    //        double dx = cos(ants[i]._direction)*ants[i]._speed;
-    //        double dy = cos(ants[i]._direction)*ants[i]._speed;
-    //        int destination_y = int(double(ants[i]._current_position.x) + dx);
-    //    }
-    //    ants[i]._current_position = {destination_x, destination_y};
-    //    //update path with new ent
-    //    ants[i]._path.push_back(ants[i]._current_position);
-    //} 
+        if(rand_up >= fmax(rand_down, rand_right)){
+            ant._current_position.y += 1;
+        } else if(rand_down >= fmax(rand_up, rand_right)){
+            ant._current_position.y -= 1;
+        }else if(rand_right >= fmax(rand_up, rand_down)){
+            ant._current_position.x += 1;
+        }
+        ant._path.push_back(ant._current_position);
+    }
 }
 
 
 void execute_death(Simulation& sim)
 {
-    for (Ant ant : sim._ants){
-        if (ant._current_position.y == (Y_DIM-1)){
-            std::cout << "Ant died";
+    for (Ant& ant : sim._ants){
+        if (ant._current_position.x == (X_DIM-1)){
+            //std::cout << "Ant died" << '\n';
             //update pheromones map
+            
             for (Point pos : ant._path){
                 int x = pos.x;
                 int y = pos.y;
@@ -112,6 +102,7 @@ void execute_death(Simulation& sim)
             //reset ant path and position
             ant.reset_path();
             ant.reset_pos();
+            ant._ant_temperature = 0.0;
         };
     };
 }
@@ -144,6 +135,7 @@ int main(){
     
 
     int max_time_steps = 1000;
+    int n_ants = 300;
     
     std::ofstream heatFile("heatHistory.txt");
     std::ofstream pheroFile("pheroHistory.txt");
@@ -155,9 +147,9 @@ int main(){
         pheroFile << max_time_steps << ", " << X_DIM << ", " << Y_DIM << "\n";
     }        
     
-    Simulation sim(max_time_steps, 5);
+    Simulation sim(max_time_steps, n_ants);
     
-    printMatrix(sim._heat_matrix, false);
+    //printMatrix(sim._heat_matrix, false);
 
     for (int i = 0; i < max_time_steps; ++i) {
         //print_ants(sim._ants);
@@ -170,7 +162,7 @@ int main(){
         sim.saveSimState(heatFile, pheroFile);
     }
     
-    printMatrix(sim._heat_matrix, false);
+    //printMatrix(sim._heat_matrix, false);
 
     return 0;
 }
