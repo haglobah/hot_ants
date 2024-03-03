@@ -49,7 +49,7 @@ def make_vid(data_array):
         black_white_array = data_array[i]
         cv2.imwrite('out/' + format(i, '05d')+'.jpg', black_white_array)
 
-    frameSize = (1200, 600)
+    frameSize = (y, x)
 
     video_out = cv2.VideoWriter('output_video.m4v', cv2.VideoWriter_fourcc(*'mp4v'), 10, frameSize)
 
